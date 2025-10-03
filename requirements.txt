@@ -1,6 +1,50 @@
-fastapi
-uvicorn
-python-dotenv
-pydantic
-httpx
-requests
+# ================================================
+# Requirements - Startup Incubation API v3.0.0
+# ================================================
+
+# ──────────────────────────────────────────────
+# Framework Web
+# ──────────────────────────────────────────────
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+python-multipart==0.0.6
+
+# ──────────────────────────────────────────────
+# Validation et configuration
+# ──────────────────────────────────────────────
+pydantic==2.5.3
+pydantic-settings==2.1.0
+python-dotenv==1.0.0
+
+# ──────────────────────────────────────────────
+# HTTP et requêtes
+# ──────────────────────────────────────────────
+httpx==0.26.0
+requests==2.31.0
+
+# ──────────────────────────────────────────────
+# CORS et middleware
+# ──────────────────────────────────────────────
+# Inclus dans FastAPI
+
+# ──────────────────────────────────────────────
+# Utilitaires
+# ──────────────────────────────────────────────
+# Déjà disponibles en Python standard: hashlib, re, time, random, math
+
+# ──────────────────────────────────────────────
+# Développement (optionnel)
+# ──────────────────────────────────────────────
+# Décommenter pour le développement
+# pytest==7.4.3
+# pytest-asyncio==0.23.3
+# pytest-cov==4.1.0
+# black==23.12.1
+# flake8==7.0.0
+# mypy==1.8.0
+
+# ──────────────────────────────────────────────
+# Production (optionnel)
+# ──────────────────────────────────────────────
+# gunicorn==21.2.0  # Alternative à uvicorn
+# prometheus-fastapi-instrumentator==6.1.0  # Métriques

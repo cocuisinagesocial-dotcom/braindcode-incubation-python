@@ -1,8 +1,19 @@
-# Byte-compiled / optimized / DLL files
+# ================================================
+# .gitignore - Startup Incubation API
+# ================================================
+
+# ──────────────────────────────────────────────
+# Python
+# ──────────────────────────────────────────────
 __pycache__/
 *.py[cod]
 *$py.class
-# Environments
+*.so
+.Python
+
+# ──────────────────────────────────────────────
+# Environnements virtuels
+# ──────────────────────────────────────────────
 .env
 .venv
 env/
@@ -10,3 +21,158 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+.virtualenv
+
+# ──────────────────────────────────────────────
+# Distribution / packaging
+# ──────────────────────────────────────────────
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# ──────────────────────────────────────────────
+# PyInstaller
+# ──────────────────────────────────────────────
+*.manifest
+*.spec
+
+# ──────────────────────────────────────────────
+# Unit test / coverage
+# ──────────────────────────────────────────────
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+.pytest_cache
+
+# ──────────────────────────────────────────────
+# Jupyter Notebook
+# ──────────────────────────────────────────────
+.ipynb_checkpoints
+
+# ──────────────────────────────────────────────
+# pyenv
+# ──────────────────────────────────────────────
+.python-version
+
+# ──────────────────────────────────────────────
+# Logs et bases de données
+# ──────────────────────────────────────────────
+*.log
+*.sqlite3
+*.db
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# ──────────────────────────────────────────────
+# IDEs
+# ──────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# PyCharm
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# ──────────────────────────────────────────────
+# OS
+# ──────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# ──────────────────────────────────────────────
+# Docker
+# ──────────────────────────────────────────────
+docker-compose.override.yml
+.dockerignore
+
+# ──────────────────────────────────────────────
+# Application spécifique
+# ──────────────────────────────────────────────
+# Backups
+*.backup
+*.bak
+*.old
+
+# Fichiers temporaires
+tmp/
+temp/
+*.tmp
+
+# Cache local
+.cache/
+cache/
+
+# Données de test
+test_data/
+test_output/
+
+# Secrets (ne jamais commiter)
+*.key
+*.pem
+*.p12
+secrets/
+credentials/
+
+# ──────────────────────────────────────────────
+# Documentation générée
+# ──────────────────────────────────────────────
+docs/_build/
+site/
+
+# ──────────────────────────────────────────────
+# Monitoring et profiling
+# ──────────────────────────────────────────────
+*.prof
+*.lprof
+.prof/
+
+# ──────────────────────────────────────────────
+# Ollama (local)
+# ──────────────────────────────────────────────
+# Ne pas versionner les modèles locaux
+.ollama/
+ollama_data/
+
+# ──────────────────────────────────────────────
+# Fichiers à garder
+# ──────────────────────────────────────────────
+!.env.example
+!.gitignore
+!.dockerignore

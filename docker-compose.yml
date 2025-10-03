@@ -1,0 +1,126 @@
+version: '3.8'
+
+# ================================================
+# Docker Compose - Startup Incubation API
+# ================================================
+
+services:
+  # ──────────────────────────────────────────────
+  # Ollama - Serveur LLM
+  # ──────────────────────────────────────────────
+  ollama:
+    image: ollama/ollama:latest
+    container_name: startup-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    environment:
+      - OLLAMA_HOST=0.0.0.0:11434
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      - startup-network
+    # Décommenter pour utiliser GPU (NVIDIA)
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
+
+  # ──────────────────────────────────────────────
+  # API - Application FastAPI
+  # ──────────────────────────────────────────────
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: startup-api
+    ports:
+      - "5005:5005"
+    environment:
+      # Ollama
+      - OLLAMA_URL=http://ollama:11434
+      - LLM_MODEL=llama3.1:3b-instruct
+      - EMBED_MODEL=nomic-embed-text
+      
+      # Timeouts
+      - MAX_LLM_TIMEOUT=12.0
+      - MAX_EMBED_TIMEOUT=6.0
+      
+      # Cache et RAG
+      - CACHE_SIZE=6
+      - RAG_TOP_K=8
+      - MIN_SNIPPET_CHARS=30
+      - DEDUPE_THRESHOLD=0.8
+      - SIMILARITY_THRESHOLD=0.90
+      
+      # CORS (adapter en production)
+      - CORS_ORIGINS=*
+      
+      # Serveur
+      - HOST=0.0.0.0
+      - PORT=5005
+      
+      # Logging
+      - LOG_LEVEL=INFO
+    depends_on:
+      ollama:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5005/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    networks:
+      - startup-network
+    # Limites de ressources (optionnel)
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2G
+        reservations:
+          cpus: '1'
+          memory: 1G
+
+  # ──────────────────────────────────────────────
+  # Nginx - Reverse proxy (optionnel)
+  # ──────────────────────────────────────────────
+  # nginx:
+  #   image: nginx:alpine
+  #   container_name: startup-nginx
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   volumes:
+  #     - ./nginx.conf:/etc/nginx/nginx.conf:ro
+  #     - ./ssl:/etc/nginx/ssl:ro
+  #   depends_on:
+  #     - api
+  #   restart: unless-stopped
+  #   networks:
+  #     - startup-network
+
+# ──────────────────────────────────────────────
+# Volumes
+# ──────────────────────────────────────────────
+volumes:
+  ollama_data:
+    driver: local
+
+# ──────────────────────────────────────────────
+# Networks
+# ──────────────────────────────────────────────
+networks:
+  startup-network:
+    driver: bridge
