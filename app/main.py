@@ -34,7 +34,7 @@ logger = logging.getLogger(__name__)
 class Config:
     """Configuration centralisée de l'application"""
     OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11434")
-    LLM_MODEL = os.getenv("LLM_MODEL", "llama3.1:3b-instruct")
+    LLM_MODEL = os.getenv("LLM_MODEL", "llama3.2:3b")
     EMBED_MODEL = os.getenv("EMBED_MODEL", "nomic-embed-text")
     MAX_LLM_TIMEOUT = float(os.getenv("MAX_LLM_TIMEOUT", "12.0"))
     MAX_EMBED_TIMEOUT = float(os.getenv("MAX_EMBED_TIMEOUT", "6.0"))
@@ -108,7 +108,7 @@ class Item(BaseModel):
 class StructuredRequest(BaseModel):
     """Requête de scoring structuré"""
     step_name: str = Field(..., min_length=1, description="Nom de l'étape")
-    items: List[Item] = Field(..., min_items=1, description="Liste des items à scorer")
+    items: List[Item] = Field(default=[], description="Liste des items à scorer")
 
 
 class HealthResponse(BaseModel):
@@ -1140,7 +1140,8 @@ async def score_structured(payload: StructuredRequest):
     - Status global
     - Feedback global
     """
-    if not payload.items:
+    # Accepter les listes vides (retourner un score de 0)
+    if not payload.items or len(payload.items) == 0:
         return {
             "items": [],
             "global_score": 0,

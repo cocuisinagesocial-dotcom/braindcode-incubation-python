@@ -58,7 +58,7 @@ env: ## Créer le fichier .env depuis .env.example
 models: ## Télécharger les modèles Ollama
 	@echo "$(BLUE)Téléchargement des modèles Ollama...$(NC)"
 	@echo "$(YELLOW)Cela peut prendre plusieurs minutes...$(NC)"
-	ollama pull llama3.1:3b-instruct
+	ollama pull llama3.2:3b || ollama pull mistral:7b-instruct
 	ollama pull nomic-embed-text
 	@echo "$(GREEN)✓ Modèles téléchargés$(NC)"
 

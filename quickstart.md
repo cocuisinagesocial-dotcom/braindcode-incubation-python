@@ -43,7 +43,8 @@ cp .env.example .env
 
 ```bash
 # Modèle LLM (rapide, ~2GB)
-ollama pull llama3.1:3b-instruct
+ollama pull llama3.2:3b
+# OU si pas disponible : ollama pull mistral:7b-instruct
 
 # Modèle d'embeddings (~270MB)
 ollama pull nomic-embed-text
